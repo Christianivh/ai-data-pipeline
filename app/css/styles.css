@@ -1,0 +1,77 @@
+:root {
+  --color-rojo: #E57373;
+  --color-morado: #7B52AB;
+  --color-fucsia: #d48fd4;
+  --fondo: #f8f9fa;
+}
+
+body {
+  background-color: var(--fondo);
+  font-family: 'Arial', sans-serif;
+}
+
+.view {
+  display: none;
+}
+.view.active {
+  display: block;
+}
+
+.navbar {
+  background-color: var(--color-morado) !important;
+}
+.navbar-brand {
+  color: var(--color-fucsia) !important;
+}
+
+.card {
+  border: none;
+  border-radius: 0.5rem;
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.btn-primary {
+  background-color: var(--color-rojo);
+  border-color: var(--color-rojo);
+}
+.btn-primary:hover {
+  background-color: var(--color-fucsia);
+  border-color: var(--color-fucsia);
+}
+
+.list-group-item:hover {
+  background-color: rgba(218, 232, 252, 0.5);
+  cursor: pointer;
+}
+
+.list-group-item.active {
+  background-color: var(--color-fucsia);
+  border-color: var(--color-fucsia);
+  color: #fff;
+}
+.list-group-item.active:hover {
+  background-color: var(--color-fucsia);
+  color: #fff;
+}
+
+#lista-proyectos {
+  max-height: 700px; /* Para limitar la altura y activar el scroll en caso de muchos proyectos */
+  overflow-y: auto;
+}
+
+/* Asegura que la fila que contiene las columnas use flexbox para igualar la altura */
+.row {
+  display: flex;
+  align-items: stretch;
+}
+
+/* Estilos para la lista de tickets en el detalle del proyecto */
+#detalle-proyecto-tickets {
+  max-height: 600px; /*Ajusta este valor según el diseño que necesites */
+  overflow-y: auto;
+}

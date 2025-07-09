@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-P">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SoundGuard App Mockup - Todas las Vistas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light grayish blue background */
+        }
+        .safe-level { color: #34D399; /* Green */ }
+        .warning-level { color: #FBBF24; /* Amber */ }
+        .danger-level { color: #EF4444; /* Red */ }
+        .card {
+            background-color: white;
+            border-radius: 1rem; /* More rounded corners */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 1.5rem; /* p-6 */
+            margin-bottom: 1.5rem; /* mb-6 */
+        }
+        .bottom-nav {
+            border-top: 1px solid #e5e7eb; /* gray-200 */
+        }
+        .nav-item {
+            transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+        }
+        .nav-item.active {
+            color: #3B82F6; /* blue-500 */
+            border-top: 2px solid #3B82F6; /* blue-500 */
+            padding-top: calc(0.75rem - 2px); /* Adjust padding for border */
+            background-color: #eff6ff; /* blue-50 */
+        }
+        .nav-item:hover {
+            background-color: #f3f4f6; /* gray-100 */
+        }
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+        .status-connected { background-color: #34D399; /* Green */ }
+        .status-disconnected { background-color: #EF4444; /* Red */ }
+
+        /* Chart placeholder styling */
+        .chart-placeholder {
+            width: 100%;
+            height: 200px; /* Default height */
+            background-color: #e9ecef; /* Light gray for placeholder */
+            border-radius: 0.5rem; /* rounded-lg */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6b7280; /* gray-500 */
+            font-size: 0.875rem; /* text-sm */
+            margin-top: 1rem;
+        }
+        .page {
+            display: none; /* Hidden by default */
+        }
+        .page.active {
+            display: block; /* Shown when active */
+        }
+        .sound-item {
+            border: 1px solid #e5e7eb; /* gray-200 */
+            padding: 1rem;
+            border-radius: 0.75rem; /* rounded-xl */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+        .sound-item:hover {
+            background-color: #f9fafb; /* gray-50 */
+        }
+        .tab-button {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: background-color 0.2s, color 0.2s;
+        }
+        .tab-button.active {
+            background-color: #3B82F6; /* blue-500 */
+            color: white;
+        }
+        .tab-button:not(.active) {
+            background-color: #e5e7eb; /* gray-200 */
+            color: #374151; /* gray-700 */
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 id="pageTitle" class="text-xl font-bold text-gray-800">SoundGuard AI</h1>
+            <div>
+                <span class="status-dot status-connected" title="Audífonos Conectados"></span>
+                <i class="fas fa-bell text-gray-600 text-xl cursor-pointer hover:text-blue-500"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow container mx-auto px-4 py-6">
+
+        <div id="page-inicio" class="page active">
+            <div class="card text-center">
+                <h2 class="text-sm font-medium text-gray-500 mb-1">NIVEL DE RUIDO ACTUAL</h2>
+                <p class="text-5xl font-bold safe-level mb-1">65 dB</p>
+                <p class="text-sm text-gray-600 mb-3">Ambiente Seguro</p>
+                <div class="w-full bg-gray-200 rounded-full h-2.5 mb-4">
+                    <div class="bg-green-500 h-2.5 rounded-full" style="width: 65%"></div>
+                </div>
+                <p class="text-xs text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    Recomendación: Mantener por debajo de 85 dB para exposición prolongada.
+                </p>
+            </div>
+
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-4">Acciones Rápidas</h3>
+                <div class="grid grid-cols-2 gap-4">
+                    <button onclick="navigateTo('page-relax', this)" class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-3 px-4 rounded-lg shadow flex items-center justify-center transition-colors">
+                        <i class="fas fa-headphones-alt mr-2"></i> Sonidos Relajantes
+                    </button>
+                    <button onclick="navigateTo('page-stats', this)" class="bg-teal-500 hover:bg-teal-600 text-white font-medium py-3 px-4 rounded-lg shadow flex items-center justify-center transition-colors">
+                        <i class="fas fa-chart-line mr-2"></i> Ver Estadísticas
+                    </button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Resumen de Exposición Hoy</h3>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-600">Nivel Máximo Alcanzado:</span>
+                    <span class="font-semibold warning-level">92 dB <span class="text-xs">(Tráfico Denso)</span></span>
+                </div>
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-gray-600">Tiempo en Zona de Riesgo (>85dB):</span>
+                    <span class="font-semibold">15 minutos</span>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span class="text-gray-600">Estado General:</span>
+                    <span class="font-semibold text-green-600">Mayormente Seguro</span>
+                </div>
+                <div class="chart-placeholder">
+                    <span>[Gráfico de Picos Diarios Placeholder]</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-monitor" class="page">
+            <div class="card">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2 text-center">Monitor en Tiempo Real</h2>
+                <div class="text-center mb-4">
+                    <p class="text-6xl font-bold warning-level" id="liveDbLevel">88 dB</p>
+                    <p class="text-lg text-yellow-600" id="liveDbStatus">Nivel de Precaución</p>
+                </div>
+                <div class="chart-placeholder" style="height: 250px;">
+                    <span>[Gráfico de Líneas de dB en Tiempo Real Placeholder]</span>
+                    <p class="text-xs text-gray-400 mt-2">Simulando fluctuaciones de ruido...</p>
+                </div>
+                <div class="mt-6 bg-gray-50 p-4 rounded-lg">
+                    <h4 class="font-semibold text-gray-700 mb-2"><i class="fas fa-brain mr-1"></i> Análisis IA del Entorno:</h4>
+                    <p class="text-sm text-gray-600" id="iaAnalysis">Detectando: <span class="font-medium">Conversaciones moderadas, ruido de oficina.</span></p>
+                    <p class="text-xs text-gray-500 mt-1">Última actualización: Hace 3 segundos</p>
+                </div>
+            </div>
+             <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Historial Reciente (Última Hora)</h3>
+                <ul class="space-y-2 text-sm">
+                    <li class="flex justify-between p-2 bg-red-50 rounded-md"><span><i class="fas fa-exclamation-triangle text-red-500 mr-2"></i>Pico: <strong>95 dB</strong> (Sirena)</span> <span class="text-gray-500">Hace 5 min</span></li>
+                    <li class="flex justify-between p-2 bg-yellow-50 rounded-md"><span><i class="fas fa-volume-up text-yellow-500 mr-2"></i>Promedio: <strong>75 dB</strong></span> <span class="text-gray-500">Últimos 15 min</span></li>
+                    <li class="flex justify-between p-2 bg-green-50 rounded-md"><span><i class="fas fa-check-circle text-green-500 mr-2"></i>Mínimo: <strong>50 dB</strong> (Silencio)</span> <span class="text-gray-500">Hace 30 min</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div id="page-relax" class="page">
+            <div class="card">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Oasis de Calma</h2>
+                <div class="mb-6">
+                    <input type="search" placeholder="Buscar sonidos (ej. lluvia, olas)..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                </div>
+
+                <div>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Naturaleza</h3>
+                    <div class="space-y-3 mb-6">
+                        <div class="sound-item">
+                            <div>
+                                <p class="font-medium text-gray-800"><i class="fas fa-cloud-rain mr-2 text-blue-400"></i>Lluvia Suave</p>
+                                <p class="text-xs text-gray-500">Perfecto para relajarse o dormir.</p>
+                            </div>
+                            <button class="text-blue-500 hover:text-blue-700 text-2xl"><i class="fas fa-play-circle"></i></button>
+                        </div>
+                        <div class="sound-item">
+                            <div>
+                                <p class="font-medium text-gray-800"><i class="fas fa-water mr-2 text-cyan-500"></i>Olas del Mar</p>
+                                <p class="text-xs text-gray-500">Sonido constante y calmante.</p>
+                            </div>
+                            <button class="text-blue-500 hover:text-blue-700 text-2xl"><i class="fas fa-play-circle"></i></button>
+                        </div>
+                         <div class="sound-item">
+                            <div>
+                                <p class="font-medium text-gray-800"><i class="fas fa-wind mr-2 text-green-400"></i>Viento en el Bosque</p>
+                                <p class="text-xs text-gray-500">Susurros de hojas y brisa.</p>
+                            </div>
+                            <button class="text-blue-500 hover:text-blue-700 text-2xl"><i class="fas fa-play-circle"></i></button>
+                        </div>
+                    </div>
+
+                    <h3 class="text-xl font-semibold text-gray-700 mb-3">Ruido Blanco y Ambiental</h3>
+                     <div class="space-y-3">
+                        <div class="sound-item">
+                            <div>
+                                <p class="font-medium text-gray-800"><i class="fas fa-braille mr-2 text-purple-400"></i>Ruido Blanco Puro</p>
+                                <p class="text-xs text-gray-500">Para concentración y bloqueo de sonidos.</p>
+                            </div>
+                            <button class="text-blue-500 hover:text-blue-700 text-2xl"><i class="fas fa-play-circle"></i></button>
+                        </div>
+                        <div class="sound-item">
+                            <div>
+                                <p class="font-medium text-gray-800"><i class="fas fa-coffee mr-2 text-orange-400"></i>Cafetería Tranquila</p>
+                                <p class="text-xs text-gray-500">Murmullos suaves y ambiente productivo.</p>
+                            </div>
+                            <button class="text-blue-500 hover:text-blue-700 text-2xl"><i class="fas fa-play-circle"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+             <div class="sticky bottom-20 z-40 px-4"> <div class="card bg-gray-800 text-white p-4 flex items-center justify-between shadow-xl">
+                    <div>
+                        <p class="text-sm font-medium">Reproduciendo: <span id="currentTrack">Lluvia Suave</span></p>
+                        <p class="text-xs text-gray-400">01:23 / 05:00</p>
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="text-gray-300 hover:text-white"><i class="fas fa-backward"></i></button>
+                        <button class="text-gray-100 hover:text-white text-2xl"><i class="fas fa-pause-circle"></i></button>
+                        <button class="text-gray-300 hover:text-white"><i class="fas fa-forward"></i></button>
+                        <button class="text-gray-300 hover:text-white" onclick="alert('Ajustes de temporizador no implementados en mockup')"><i class="fas fa-clock"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-stats" class="page">
+            <div class="card">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Mis Estadísticas Auditivas</h2>
+                <div class="flex justify-center space-x-2 mb-6">
+                    <button class="tab-button active" onclick="showStatsTab('hoy', this)">Hoy</button>
+                    <button class="tab-button" onclick="showStatsTab('semana', this)">Semana</button>
+                    <button class="tab-button" onclick="showStatsTab('mes', this)">Mes</button>
+                </div>
+
+                <div id="stats-hoy" class="stats-tab-content">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-1">Resumen de Hoy</h3>
+                    <p class="text-sm text-gray-500 mb-3">Datos actualizados hasta ahora.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <p class="text-sm text-blue-700">Promedio dB</p>
+                            <p class="text-2xl font-bold text-blue-800">72 dB</p>
+                        </div>
+                        <div class="bg-yellow-50 p-4 rounded-lg">
+                            <p class="text-sm text-yellow-700">Máximo dB</p>
+                            <p class="text-2xl font-bold text-yellow-800">98 dB <span class="text-xs">(Alarma)</span></p>
+                        </div>
+                        <div class="bg-red-50 p-4 rounded-lg col-span-1 md:col-span-2">
+                            <p class="text-sm text-red-700">Tiempo sobre 85 dB</p>
+                            <p class="text-2xl font-bold text-red-800">23 minutos</p>
+                        </div>
+                    </div>
+                    <div class="chart-placeholder">
+                        <span>[Gráfico de Exposición Diaria - Niveles de dB por Hora Placeholder]</span>
+                    </div>
+                </div>
+
+                <div id="stats-semana" class="stats-tab-content hidden">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-1">Resumen Semanal</h3>
+                     <p class="text-sm text-gray-500 mb-3">Últimos 7 días.</p>
+                    <div class="chart-placeholder">
+                        <span>[Gráfico de Tendencia Semanal - Promedio dB Diario Placeholder]</span>
+                    </div>
+                     <p class="text-center text-sm text-gray-600 mt-4">Día más ruidoso: Martes (Promedio 78 dB)</p>
+                </div>
+
+                <div id="stats-mes" class="stats-tab-content hidden">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-1">Resumen Mensual</h3>
+                    <p class="text-sm text-gray-500 mb-3">Últimos 30 días.</p>
+                    <div class="chart-placeholder">
+                        <span>[Gráfico de Tendencia Mensual - Promedio dB Semanal Placeholder]</span>
+                    </div>
+                    <p class="text-center text-sm text-gray-600 mt-4">Semana con mayor exposición: Semana 2 (Promedio 75 dB)</p>
+                </div>
+            </div>
+            <div class="card">
+                <h3 class="text-lg font-semibold text-gray-700 mb-3">Análisis de Frecuencias (Hoy)</h3>
+                <p class="text-sm text-gray-500 mb-4">Intensidad máxima registrada en diferentes rangos de frecuencia.</p>
+                <div class="space-y-3">
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium text-gray-700">Bajas (20-250 Hz):</span>
+                        <span class="font-bold text-lg text-indigo-600">78 dB</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium text-gray-700">Medias (250-2000 Hz):</span>
+                        <span class="font-bold text-lg text-red-600">95 dB</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-gray-50 rounded-lg">
+                        <span class="font-medium text-gray-700">Altas (2000-20000 Hz):</span>
+                        <span class="font-bold text-lg text-teal-600">70 dB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-ajustes" class="page">
+            <div class="card">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Ajustes de SoundGuard</h2>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Mis Dispositivos</h3>
+                    <div class="p-4 bg-gray-100 rounded-lg flex justify-between items-center">
+                        <div>
+                            <p class="font-medium text-gray-800">SoundGuard AI Buds</p>
+                            <p class="text-sm status-connected"><span class="status-dot status-connected inline-block mr-0 align-middle"></span>Conectado</p>
+                        </div>
+                        <button class="text-sm text-red-500 hover:text-red-700 font-medium">Desvincular</button>
+                    </div>
+                </div>
+
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-3">Notificaciones de Ruido</h3>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <label for="alertToggle" class="text-gray-700">Alertas de Ruido Excesivo</label>
+                            <div class="relative inline-block w-10 mr-2 align-middle select-none transition duration-200 ease-in">
+                                <input type="checkbox" name="alertToggle" id="alertToggle" class="toggle-checkbox absolute block w-6 h-6 rounded-full bg-white border-4 appearance-none cursor-pointer" checked/>
+                                <label for="alertToggle" class="toggle-label block overflow-hidden h-6 rounded-full bg-gray-300 cursor-pointer"></label>
+                            </div>
+                        </div>
+                        <style>
+                            .toggle-checkbox:checked { right: 0; border-color: #3B82F6; }
+                            .toggle-checkbox:checked + .toggle-label { background-color: #3B82F6; }
+                        </style>
+
+                        <div>
+                            <label for="thresholdMain" class="block text-sm font-medium text-gray-700">Umbral Principal (ej. >85dB por 5 min)</label>
+                            <input type="number" id="thresholdMain" value="85" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                        <div>
+                            <label for="thresholdImmediate" class="block text-sm font-medium text-gray-700">Umbral Inmediato (ej. >100dB)</label>
+                            <input type="number" id="thresholdImmediate" value="100" class="mt-1 block w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Perfil</h3>
+                     <button class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors">
+                        <i class="fas fa-user-circle mr-2"></i> Ver mi Perfil (No implementado)
+                    </button>
+                </div>
+
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Soporte y Legal</h3>
+                    <div class="space-y-2">
+                         <button class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors">
+                            <i class="fas fa-question-circle mr-2"></i> Ayuda y FAQ
+                        </button>
+                         <button class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors">
+                            <i class="fas fa-shield-alt mr-2"></i> Política de Privacidad
+                        </button>
+                         <button class="w-full text-left p-3 bg-gray-100 hover:bg-gray-200 rounded-lg text-gray-700 transition-colors">
+                            <i class="fas fa-info-circle mr-2"></i> Acerca de SoundGuard v1.0
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <nav class="bg-white shadow-t sticky bottom-0 z-50 bottom-nav">
+        <div class="container mx-auto flex justify-around">
+            <a href="#" data-page="page-inicio" class="nav-item active flex-1 text-center py-3 text-sm text-gray-700 hover:text-blue-500">
+                <i class="fas fa-home block text-xl mb-1"></i> Inicio
+            </a>
+            <a href="#" data-page="page-monitor" class="nav-item flex-1 text-center py-3 text-sm text-gray-700 hover:text-blue-500">
+                <i class="fas fa-wave-square block text-xl mb-1"></i> Monitor
+            </a>
+            <a href="#" data-page="page-relax" class="nav-item flex-1 text-center py-3 text-sm text-gray-700 hover:text-blue-500">
+                <i class="fas fa-spa block text-xl mb-1"></i> Relax
+            </a>
+            <a href="#" data-page="page-stats" class="nav-item flex-1 text-center py-3 text-sm text-gray-700 hover:text-blue-500">
+                <i class="fas fa-chart-bar block text-xl mb-1"></i> Stats
+            </a>
+            <a href="#" data-page="page-ajustes" class="nav-item flex-1 text-center py-3 text-sm text-gray-700 hover:text-blue-500">
+                <i class="fas fa-cog block text-xl mb-1"></i> Ajustes
+            </a>
+        </div>
+    </nav>
+
+    <script>
+        const pages = document.querySelectorAll('.page');
+        const navItems = document.querySelectorAll('.nav-item');
+        const pageTitleElement = document.getElementById('pageTitle');
+        const pageTitles = {
+            'page-inicio': 'SoundGuard AI - Inicio',
+            'page-monitor': 'Monitor en Vivo',
+            'page-relax': 'Sonidos Relajantes',
+            'page-stats': 'Estadísticas Auditivas',
+            'page-ajustes': 'Ajustes'
+        };
+
+        function navigateTo(pageId, clickedNavItem) {
+            // Ocultar todas las páginas
+            pages.forEach(page => page.classList.remove('active'));
+            // Quitar clase activa de todos los items de navegación
+            navItems.forEach(item => item.classList.remove('active'));
+
+            // Mostrar la página seleccionada
+            const targetPage = document.getElementById(pageId);
+            if (targetPage) {
+                targetPage.classList.add('active');
+            }
+
+            // Marcar el item de navegación como activo
+            // Si la navegación es por un botón de acción rápida, encontrar el nav-item correspondiente
+            let navLinkToActivate;
+            if (clickedNavItem && clickedNavItem.dataset.page) { // Clicked from bottom nav
+                 navLinkToActivate = clickedNavItem;
+            } else { // Clicked from quick action or other button
+                navLinkToActivate = document.querySelector(`.nav-item[data-page="${pageId}"]`);
+            }
+            
+            if (navLinkToActivate) {
+                 navLinkToActivate.classList.add('active');
+            }
+
+
+            // Actualizar título de la página
+            pageTitleElement.textContent = pageTitles[pageId] || 'SoundGuard AI';
+        }
+
+        // Event listeners para la navegación inferior
+        navItems.forEach(item => {
+            item.addEventListener('click', (event) => {
+                event.preventDefault();
+                const pageId = item.dataset.page;
+                navigateTo(pageId, item);
+            });
+        });
+        
+        // Simulación para Monitor en vivo
+        const liveDbLevel = document.getElementById('liveDbLevel');
+        const liveDbStatus = document.getElementById('liveDbStatus');
+        const iaAnalysis = document.getElementById('iaAnalysis');
+        const possibleAnalyses = [
+            "Detectando: Tráfico ligero, viento suave.",
+            "Detectando: Conversaciones múltiples, música de fondo.",
+            "Detectando: Ruido de maquinaria distante.",
+            "Detectando: Silencio ambiental, posible goteo de agua.",
+            "Detectando: Música alta con bajos profundos.",
+            "Detectando: Voces altas, risas."
+        ];
+
+        if (liveDbLevel) { // Check if element exists (i.e., we are on the monitor page or it's loaded)
+            setInterval(() => {
+                const randomDb = Math.floor(Math.random() * (110 - 40 + 1)) + 40; // Random dB entre 40 y 110
+                liveDbLevel.textContent = `${randomDb} dB`;
+                if (randomDb < 70) {
+                    liveDbLevel.className = 'text-6xl font-bold safe-level';
+                    liveDbStatus.textContent = 'Ambiente Seguro';
+                    liveDbStatus.className = 'text-lg text-green-600';
+                } else if (randomDb < 90) {
+                    liveDbLevel.className = 'text-6xl font-bold warning-level';
+                    liveDbStatus.textContent = 'Nivel de Precaución';
+                    liveDbStatus.className = 'text-lg text-yellow-600';
+                } else {
+                    liveDbLevel.className = 'text-6xl font-bold danger-level';
+                    liveDbStatus.textContent = '¡Peligro! Ruido Excesivo';
+                    liveDbStatus.className = 'text-lg text-red-600';
+                }
+                iaAnalysis.innerHTML = `Detectando: <span class="font-medium">${possibleAnalyses[Math.floor(Math.random() * possibleAnalyses.length)]}</span>`;
+            }, 3000); // Actualiza cada 3 segundos
+        }
+
+        // Simulación para Estadísticas Tabs
+        const statsTabButtons = document.querySelectorAll('.tab-button');
+        const statsTabContents = document.querySelectorAll('.stats-tab-content');
+
+        function showStatsTab(tabId, clickedButton) {
+            statsTabContents.forEach(content => content.classList.add('hidden'));
+            statsTabButtons.forEach(button => button.classList.remove('active'));
+
+            document.getElementById(`stats-${tabId}`).classList.remove('hidden');
+            clickedButton.classList.add('active');
+        }
+        // Asegurar que los botones de tab funcionen
+        statsTabButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                // La lógica de showStatsTab ya se llama desde el HTML onclick,
+                // pero podríamos añadir más lógica aquí si fuera necesario.
+            });
+        });
+
+
+        // Inicializar en la página de inicio
+        navigateTo('page-inicio', document.querySelector('.nav-item[data-page="page-inicio"]'));
+        console.log("Mockup de SoundGuard App con todas las vistas cargado.");
+    </script>
+
+</body>
+</html>

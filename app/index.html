@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Plataforma DataFlowAI</title>
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Hoja de estilos personalizada -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="bg-light">
+  <!-- Navbar principal -->
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: var(--color-morado);">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#" style="color: var(--color-fucsia);">DataFlowAI</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+          <a class="nav-link" href="#" data-view="explorador">Explorador</a>
+          <a class="nav-link" href="#" data-view="ard">ARD</a>
+          <a class="nav-link" href="#" data-view="data">Data Sintética</a>
+          <a class="nav-link" href="#" data-view="pipeline">Pipeline</a>
+          <a class="nav-link" href="#" data-view="agentes">Agentes AI</a>
+          <a class="nav-link" href="#" data-view="documentacion">Documentación</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container my-4" id="app">
+    <!-- Vista: Explorador de Proyectos -->
+    <section id="view-explorador" class="view active">
+      <div class="container my-4">
+        <div class="row">
+
+          <!-- Columna Izquierda: Lista de Proyectos -->
+          <div class="col-md-4">
+            <div class="mb-3">
+              <input type="text" id="search-projects" class="form-control" placeholder="Buscar proyectos...">
+            </div>
+            <div class="card mb-3 shadow-sm h-100">
+              <div class="card-header">
+                <h5>Lista de Proyectos</h5>
+              </div>
+              <div class="card-body p-0">
+                <ul class="list-group" id="lista-proyectos"></ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Columna Derecha: Detalle del Proyecto -->
+          <div class="col-md-8">
+            <div class="card mb-3 shadow-sm h-100">
+              <div class="card-header">
+                <h5>Detalle del Proyecto</h5>
+              </div>
+              <div id="detalle-proyecto-container" class="card-body position-relative">
+                <!-- Cabecera del Proyecto -->
+                <div id="detalle-proyecto-header" class="d-flex align-items-center mb-3">
+                  <img id="detalle-proyecto-avatar" src="https://via.placeholder.com/48" alt="Avatar del proyecto"
+                    width="48" height="48" class="rounded me-3">
+                  <div>
+                    <div class="d-flex justify-content-between">
+                      <span id="detalle-proyecto-key" class="fw-bold"></span>
+                      <span id="detalle-proyecto-type" class="badge bg-primary"></span>
+                    </div>
+                    <h5 id="detalle-proyecto-name" class="mt-1 mb-0"></h5>
+                  </div>
+                </div>
+                <!-- Buscador Tickets -->
+                  <div class="mb-3">
+                    <input type="text" id="search-tickets" class="form-control" placeholder="Buscar tickets...">
+                  </div>
+                <!-- Listado de Tickets -->
+                <ul class="list-group" id="detalle-proyecto-tickets"></ul>
+                <!-- Contenedor de Paginación -->
+                <!-- Se insertará un div#tickets-pagination después del listado -->
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista: ARD -->
+    <section id="view-ard" class="view">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header">
+          <h5 class="mb-0">Gestión del Modelo ARD</h5>
+        </div>
+        <div class="card-body">
+          <!-- Proyecto asociado -->
+          <p><strong>Proyecto:</strong> UNIFY/APPS - UAPP-188</p>
+          <hr>
+          <p class="card-text">Documenta la Arquitectura de Datos y sus metadatos.</p>
+
+          <!-- Sección 1: Visión Arquitectónica -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>1. Visión Arquitectónica</strong>
+            </div>
+            <div class="card-body">
+              <p>Descripción general de la arquitectura de datos.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarVisionArquitectonica')">Editar</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarDocVision')">Cargar
+                documento</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarImgVision')">Cargar
+                imagen</button>
+            </div>
+          </div>
+
+          <!-- Sección 2: Requerimientos Funcionales -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>2. Requerimientos Funcionales</strong>
+            </div>
+            <div class="card-body">
+              <p>Capacidades y funcionalidades específicas que el sistema debe cumplir.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarReqFuncionales')">Editar</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarDocReqFunc')">Cargar
+                documento</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarImgReqFunc')">Cargar
+                imagen</button>
+            </div>
+          </div>
+
+          <!-- Sección 3: Requerimientos No Funcionales -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>3. Requerimientos No Funcionales</strong>
+            </div>
+            <div class="card-body">
+              <p>Rendimiento, escalabilidad, seguridad, disponibilidad y otros criterios de calidad.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarReqNoFunc')">Editar</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarDocReqNoFunc')">Cargar
+                documento</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarImgReqNoFunc')">Cargar
+                imagen</button>
+            </div>
+          </div>
+
+          <!-- Sección 4: Arquitectura de Datos -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>4. Arquitectura de Datos</strong>
+            </div>
+            <div class="card-body">
+              <p>Modelos de datos, fuentes y estrategias de almacenamiento.</p>
+
+              <!-- Sub-sección 4.1: Metadatos de Información de Entrada -->
+              <div class="card mb-2">
+                <div class="card-header">
+                  <strong>4.1 Metadatos de Información de Entrada</strong>
+                </div>
+                <div class="card-body">
+                  <p>Detalle: nombre, formato, estructura, periodicidad, etc.</p>
+                </div>
+              </div>
+
+              <!-- Sub-sección 4.2: Metadatos de Destino de Datos -->
+              <div class="card mb-2">
+                <div class="card-header">
+                  <strong>4.2 Metadatos de Destino de Datos</strong>
+                </div>
+                <div class="card-body">
+                  <p>Detalle: esquemas, definición de campos, tipos, relaciones, etc.</p>
+                </div>
+              </div>
+
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarArqDatos')">Editar</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarDocArqDatos')">Cargar
+                documento</button>
+              <button class="btn btn-sm btn-outline-secondary" onclick="apiCall('cargarImgArqDatos')">Cargar
+                imagen</button>
+            </div>
+          </div>
+
+          <!-- Sección 5: Arquitectura Técnica -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>5. Arquitectura Técnica</strong>
+            </div>
+            <div class="card-body">
+              <p>Definición de la infraestructura y tecnologías empleadas.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarArqTecnica')">Editar</button>
+            </div>
+          </div>
+
+          <!-- Sección 6: Casos de Uso Arquitectónicos -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>6. Casos de Uso Arquitectónicos</strong>
+            </div>
+            <div class="card-body">
+              <p>Escenarios principales que definen la interacción con la arquitectura.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarCasosUsoArq')">Editar</button>
+            </div>
+          </div>
+
+          <!-- Sección 7: Matriz de Trazabilidad -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>7. Matriz de Trazabilidad</strong>
+            </div>
+            <div class="card-body">
+              <p>Mapa de correspondencia entre requerimientos y componentes de la arquitectura.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarMatrizTraz')">Editar</button>
+            </div>
+          </div>
+
+          <!-- Sección 8: Análisis de Riesgos -->
+          <div class="card mb-3">
+            <div class="card-header">
+              <strong>8. Análisis de Riesgos</strong>
+            </div>
+            <div class="card-body">
+              <p>Identificación y evaluación de riesgos críticos que pueden afectar al proyecto.</p>
+              <button class="btn btn-sm btn-primary" onclick="apiCall('editarRiesgos')">Editar</button>
+            </div>
+          </div>
+
+          <!-- Botón para ver secciones 9-12 (opcional) -->
+          <button class="btn btn-link mb-3" onclick="apiCall('mostrarMasSecciones')">
+            Mostrar más secciones (9-12)
+          </button>
+
+          <!-- Acciones principales -->
+          <div class="d-flex align-items-center justify-content-between flex-wrap">
+            <div class="mb-2">
+              <button class="btn btn-primary" onclick="apiCall('guardarCambiosARD')">Guardar Cambios</button>
+              <button class="btn btn-outline-primary" onclick="apiCall('generarDocumentoARD')">Generar Documento
+                ARD</button>
+            </div>
+            <!-- Progreso ARD -->
+            <div class="mt-2">
+              <span id="progressText">Progreso ARD: 0/12 secciones completadas (0%)</span>
+              <!-- Ejemplo de barra de progreso bootstrap -->
+              <div class="progress mt-1" style="width: 200px;">
+                <div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0"
+                  aria-valuemax="100">
+                  0%
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- Vista: Data Sintética -->
+    <section id="view-data" class="view">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Data Sintética</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Genera data de prueba (CSV, TSV, JSON) a partir de los inputs.</p>
+          <div class="row">
+            <div class="col-md-6">
+              <h6>Parámetros de Input</h6>
+              <textarea id="input-params" class="form-control mb-2"
+                placeholder="Pega o escribe los datos de entrada..."></textarea>
+              <div class="mb-2">
+                <label for="output-format" class="form-label">Formato de salida:</label>
+                <select id="output-format" class="form-select">
+                  <option value="csv">CSV</option>
+                  <option value="tsv">TSV</option>
+                  <option value="json">JSON</option>
+                </select>
+              </div>
+              <button class="btn btn-primary" onclick="generarData()">Generar Data Sintética</button>
+            </div>
+            <div class="col-md-6">
+              <h6>Vista Previa</h6>
+              <pre id="data-preview" class="bg-light p-2 border"
+                style="height: 300px; overflow:auto;">(Resultado generado aparecerá aquí)</pre>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-outline-primary" onclick="apiCall('guardarData')">Guardar Data Sintética</button>
+            <button class="btn btn-outline-success" onclick="apiCall('descargarData')">Descargar</button>
+            <button class="btn btn-outline-secondary" onclick="showView('explorador')">Volver</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista: Pipeline -->
+    <section id="view-pipeline" class="view">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Pipeline</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Configura, ejecuta y monitoriza el flujo de datos.</p>
+          <!-- Barra de navegación interna -->
+          <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="pills-config-tab" data-bs-toggle="pill" data-bs-target="#pills-config"
+                type="button" role="tab">Configuración</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-ejecucion-tab" data-bs-toggle="pill" data-bs-target="#pills-ejecucion"
+                type="button" role="tab">Ejecución</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="pills-logs-tab" data-bs-toggle="pill" data-bs-target="#pills-logs"
+                type="button" role="tab">Logs</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade show active" id="pills-config" role="tabpanel">
+              <textarea class="form-control" rows="5"
+                placeholder="Define las etapas, reglas y transformaciones..."></textarea>
+            </div>
+            <div class="tab-pane fade" id="pills-ejecucion" role="tabpanel">
+              <p>(Ejecutando pipeline...)</p>
+            </div>
+            <div class="tab-pane fade" id="pills-logs" role="tabpanel">
+              <pre class="bg-light p-2" style="height:200px; overflow:auto;">(Logs y estados en tiempo real...)</pre>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-primary" onclick="apiCall('ejecutarPipeline')">Ejecutar Pipeline</button>
+            <button class="btn btn-danger" onclick="apiCall('pararPipeline')">Parar Pipeline</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista: Agentes AI -->
+    <section id="view-agentes" class="view">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Agentes AI</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Gestiona y configura los agentes de Inteligencia Artificial.</p>
+          <div class="row">
+            <div class="col-md-4">
+              <h6>Lista de Agentes</h6>
+              <ul class="list-group" id="lista-agentes">
+                <li class="list-group-item" data-agente="001">Agente 1</li>
+                <li class="list-group-item" data-agente="002">Agente 2</li>
+              </ul>
+              <button class="btn btn-primary btn-sm mt-2" onclick="apiCall('agregarAgente')">Agregar Agente</button>
+            </div>
+            <div class="col-md-8">
+              <h6>Detalle del Agente</h6>
+              <p><strong>ID:</strong> <span id="agente-id">--</span></p>
+              <p><strong>Estado:</strong> <span id="agente-estado">--</span></p>
+              <div>
+                <button class="btn btn-outline-primary btn-sm" onclick="apiCall('editarAgente')">Editar</button>
+                <button class="btn btn-outline-danger btn-sm" onclick="apiCall('eliminarAgente')">Eliminar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Vista: Documentación -->
+    <section id="view-documentacion" class="view">
+      <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-white">
+          <h5 class="mb-0">Documentación</h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text">Repositorio centralizado de manuales, especificaciones y guías.</p>
+          <!-- Navegación interna de categorías -->
+          <ul class="nav nav-tabs mb-3" id="docTab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="manual-tab" data-bs-toggle="tab" data-bs-target="#manual"
+                type="button" role="tab">Manual</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="api-tab" data-bs-toggle="tab" data-bs-target="#apiDocs" type="button"
+                role="tab">API Docs</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="guias-tab" data-bs-toggle="tab" data-bs-target="#guias" type="button"
+                role="tab">Guías</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="docTabContent">
+            <div class="tab-pane fade show active" id="manual" role="tabpanel">
+              <h6>Lista de Documentos</h6>
+              <ul class="list-group" id="lista-documentos">
+                <li class="list-group-item" data-doc="doc1">Documento 1</li>
+                <li class="list-group-item" data-doc="doc2">Documento 2</li>
+              </ul>
+              <button class="btn btn-primary btn-sm mt-2" onclick="apiCall('agregarDocumento')">Agregar
+                Documento</button>
+            </div>
+            <div class="tab-pane fade" id="apiDocs" role="tabpanel">
+              <h6>API Docs</h6>
+              <p>(Contenido de la documentación de la API...)</p>
+            </div>
+            <div class="tab-pane fade" id="guias" role="tabpanel">
+              <h6>Guías</h6>
+              <p>(Guías, tutoriales, etc.)</p>
+            </div>
+          </div>
+          <div class="mt-3">
+            <button class="btn btn-outline-primary" onclick="apiCall('editarDocumento')">Editar</button>
+            <button class="btn btn-outline-success" onclick="apiCall('descargarDocumento')">Descargar</button>
+            <button class="btn btn-outline-secondary" onclick="showView('explorador')">Volver</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Modal para Adjuntar Archivo -->
+  <div class="modal fade" id="modalAdjuntar" tabindex="-1" aria-labelledby="modalAdjuntarLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalAdjuntarLabel">Adjuntar Archivo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>Elige la fuente del archivo:</p>
+          <ul class="nav nav-pills mb-3" id="file-source-tab" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="local-tab" data-bs-toggle="tab" data-bs-target="#local" type="button"
+                role="tab">Local</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="url-tab" data-bs-toggle="tab" data-bs-target="#url" type="button"
+                role="tab">URL</button>
+            </li>
+          </ul>
+          <div class="tab-content" id="file-source-tabContent">
+            <div class="tab-pane fade show active" id="local" role="tabpanel">
+              <input type="file" id="archivo-local" class="form-control">
+            </div>
+            <div class="tab-pane fade" id="url" role="tabpanel">
+              <input type="url" id="archivo-url" class="form-control" placeholder="Ingresa la URL del archivo">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="button" class="btn btn-primary" id="btn-subirArchivo">Subir Archivo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Detalle del Ticket -->
+  <div class="modal fade" id="ticketDetailModal" tabindex="-1" aria-labelledby="ticketDetailModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg"> <!-- Modal grande para mayor visibilidad -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ticketDetailModalLabel">Detalle del Ticket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenido del detalle del ticket -->
+          <div id="ticket-detail-content">
+            <p><strong>Código:</strong> <span id="modal-ticket-key"></span></p>
+            <p><strong>Resumen:</strong> <span id="modal-ticket-summary"></span></p>
+            <p><strong>Tipo:</strong> <span id="modal-ticket-type"></span></p>
+            <p><strong>Prioridad:</strong> <span id="modal-ticket-priority"></span></p>
+            <p><strong>Estado:</strong> <span id="modal-ticket-status"></span></p>
+            <p><strong>Descripción:</strong></p>
+            <p id="modal-ticket-description"></p>
+            <p><strong>Creado:</strong> <span id="modal-ticket-created"></span></p>
+            <p><strong>Actualizado:</strong> <span id="modal-ticket-updated"></span></p>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap 5 JS bundle -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Archivo principal de JS (módulo) -->
+  <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
